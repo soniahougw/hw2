@@ -15,20 +15,20 @@ let startTime;
 
 // === preload() replaces Processing's setup() image/sound loading ===
 function preload() {
-  cookieimg = loadImage("cookie.png");
-  startimg = loadImage("start.jpg");
-  seaimg = loadImage("sea.jpg");
-  winimg = loadImage("win.jpg");
-  againimg = loadImage("again.jpg");
+  cookieimg = loadImage("data/cookie.png");
+  startimg = loadImage("data/start.jpg");
+  seaimg = loadImage("data/sea.jpg");
+  winimg = loadImage("data/win.jpg");
+  againimg = loadImage("data/again.jpg");
 
-  fishImages[0] = loadImage("f1.png");
-  fishImages[1] = loadImage("f2.png");
-  fishImages[2] = loadImage("f3.png");
+  fishImages[0] = loadImage("data/f1.png");
+  fishImages[1] = loadImage("data/f2.png");
+  fishImages[2] = loadImage("data/f3.png");
 
-  bgm = loadSound("dive.wav");
-  file = loadSound("bitesound.wav");
-  winsound = loadSound("winsound.wav");
-  losesound = loadSound("losesound.wav");
+  bgm = loadSound("data/dive.wav");
+  file = loadSound("data/bitesound.wav");
+  winsound = loadSound("data/winsound.wav");
+  losesound = loadSound("data/losesound.wav");
 }
 
 function setup() {
