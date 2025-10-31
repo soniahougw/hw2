@@ -32,7 +32,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1020, 600);
+  createCanvas(2040, 1200);
   bgm.loop();
   setupGame();
 }
