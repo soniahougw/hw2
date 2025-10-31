@@ -50,7 +50,7 @@ for (let i = 0; i < fishImages.length; i++) {
 
 //then create multiple fish with random image
 fishes = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 20; i++) {
   fishes.push(new Fish(random(width), random(height), fishImages));
 }
 }
@@ -141,7 +141,7 @@ class Fish {
   constructor(x, y, fishImages) {
     this.x = x;
     this.y = y;
-    this.Speedx = random(1, 10);
+    this.Speedx = random(1, 8);
     this.Speedy = 1;
     this.img = random(fishImages);
     this.facingRight = true;
