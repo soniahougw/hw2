@@ -50,7 +50,7 @@ for (let i = 0; i < fishImages.length; i++) {
 
 //then create multiple fish with random image
 fishes = [];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 10; i++) {
   fishes.push(new Fish(random(width), random(height), fishImages));
 }
 }
