@@ -141,7 +141,7 @@ class Fish {
   constructor(x, y, fishImages) {
     this.x = x;
     this.y = y;
-    this.Speedx = random(1, 8);
+    this.Speedx = random(1, 10);
     this.Speedy = 1;
     this.img = random(fishImages);
     this.facingRight = true;
