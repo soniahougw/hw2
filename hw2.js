@@ -43,14 +43,16 @@ function setupGame() {
   gameOver = false;
   startTime = millis();
 
-  // create multiple fish with random image
-  fishes = [];
-  for (let i = 0; i < 20; i++) {
-    for (let i = 0; i < fishImages.length; i++) {
-    fishImages[i].resize(100, 0);
-    fishes.push(new Fish(random(width), random(height), fishImages));
-    }
-  }
+  //resize once in here
+for (let i = 0; i < fishImages.length; i++) {
+  fishImages[i].resize(100, 0);
+}
+
+//then create multiple fish with random image
+fishes = [];
+for (let i = 0; i < 20; i++) {
+  fishes.push(new Fish(random(width), random(height), fishImages));
+}
 }
 
 function draw() {
@@ -139,7 +141,7 @@ class Fish {
   constructor(x, y, fishImages) {
     this.x = x;
     this.y = y;
-    this.Speedx = random(1, 15);
+    this.Speedx = random(1, 10);
     this.Speedy = 1;
     this.img = random(fishImages);
     this.facingRight = true;
