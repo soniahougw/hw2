@@ -32,7 +32,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(2040, 1200);
+  createCanvas(1020, 600);
   bgm.loop();
   setupGame();
 }
@@ -46,7 +46,10 @@ function setupGame() {
   // create multiple fish with random image
   fishes = [];
   for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < fishImages.length; i++) {
+    fishImages[i].resize(100, 0);
     fishes.push(new Fish(random(width), random(height), fishImages));
+    }
   }
 }
 
