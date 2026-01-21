@@ -10,10 +10,10 @@ let gameOver = false;
 let gameState = 0; // 0=start, 1=playing, 2=end
 
 // timer
-let timeLimit = 20000; // 1 sec = 1000 milliseconds
+let timeLimit = 20000; // 20 seconds
 let startTime;
 
-// === preload() replaces Processing's setup() image/sound loading ===
+// ================= PRELOAD =================
 function preload() {
   cookieimg = loadImage("assets/cookie.png");
   startimg = loadImage("assets/start.jpg");
@@ -31,30 +31,39 @@ function preload() {
   losesound = loadSound("assets/losesound.wav");
 }
 
+// ================= SETUP =================
 function setup() {
   createCanvas(1020, 600);
-  bgm.loop();
   setupGame();
 }
 
+// ================= AUDIO UNLOCK (Safari Fix) =================
+function unlockAudio() {
+  let ctx = getAudioContext();
+  if (ctx.state !== "running") {
+    userStartAudio();
+  }
+}
+
+// ================= GAME RESET =================
 function setupGame() {
   winPlayed = false;
   losePlayed = false;
   gameOver = false;
   startTime = millis();
 
-  //resize once in here
-for (let i = 0; i < fishImages.length; i++) {
-  fishImages[i].resize(100, 0);
+  // resize fish images once
+  for (let i = 0; i < fishImages.length; i++) {
+    fishImages[i].resize(100, 0);
+  }
+
+  fishes = [];
+  for (let i = 0; i < 20; i++) {
+    fishes.push(new Fish(random(width), random(height), fishImages));
+  }
 }
 
-//then create multiple fish with random image
-fishes = [];
-for (let i = 0; i < 20; i++) {
-  fishes.push(new Fish(random(width), random(height), fishImages));
-}
-}
-
+// ================= DRAW =================
 function draw() {
   if (gameState === 0) {
     imageMode(CENTER);
@@ -66,10 +75,8 @@ function draw() {
     imageMode(CENTER);
     image(seaimg, width / 2, height / 2, width, height);
 
-    // mouse is cookie rod
     image(cookieimg, mouseX, mouseY, 50, 50);
 
-    // timer
     if (!gameOver) {
       let timeLeft = timeLimit - (millis() - startTime);
       fill(255);
@@ -77,14 +84,13 @@ function draw() {
       text("Time: " + max(0, int(timeLeft / 1000)), 20, height - 30);
 
       if (timeLeft <= 0 && !losePlayed) {
-        losesound.play();
+        if (!losesound.isPlaying()) losesound.play();
         losePlayed = true;
         gameOver = true;
         gameState = 2;
       }
     }
 
-    // only show fish if game still going
     if (!gameOver) {
       for (let f of fishes) {
         f.update();
@@ -92,11 +98,9 @@ function draw() {
       }
     }
 
-    // check if all fish gone
     let allGone = fishes.every(f => !f.alive);
-
     if (allGone && !winPlayed) {
-      winsound.play();
+      if (!winsound.isPlaying()) winsound.play();
       winPlayed = true;
       gameOver = true;
       gameState = 2;
@@ -113,22 +117,32 @@ function draw() {
   }
 }
 
+// ================= INPUT =================
 function mousePressed() {
-  // prevent extra clicks when game over
+  unlockAudio();
+
   if (gameState !== 1) return;
 
   for (let f of fishes) {
     if (f.checkClicked(mouseX, mouseY)) {
-      file.play();
+      if (!file.isPlaying()) file.play();
     }
   }
 }
 
 function keyPressed() {
-  if (key === 's' || key === 'S') {
-    gameState = 1; // start game
-    file.play();
+  unlockAudio();
+
+  if ((key === 's' || key === 'S') && gameState === 0) {
+    gameState = 1;
     startTime = millis();
+
+    if (!bgm.isPlaying()) {
+      bgm.setVolume(0.5);
+      bgm.loop();
+    }
+
+    file.play();
   }
 
   if (key === 'r' || key === 'R') {
@@ -137,6 +151,7 @@ function keyPressed() {
   }
 }
 
+// ================= FISH CLASS =================
 class Fish {
   constructor(x, y, fishImages) {
     this.x = x;
@@ -150,10 +165,10 @@ class Fish {
 
   update() {
     if (!this.alive) return;
+
     this.x += this.Speedx;
     this.y += this.Speedy;
 
-    // bounce
     if (this.x > width || this.x < 0) this.Speedx *= -1;
     if (this.y < 100 || this.y > height - 50) this.Speedy *= -1;
 
@@ -166,12 +181,8 @@ class Fish {
     imageMode(CENTER);
     push();
     translate(this.x, this.y);
-    if (this.facingRight) {
-      image(this.img, 0, 0);
-    } else {
-      scale(-1, 1);
-      image(this.img, 0, 0);
-    }
+    if (!this.facingRight) scale(-1, 1);
+    image(this.img, 0, 0);
     pop();
   }
 
@@ -190,4 +201,3 @@ class Fish {
     return false;
   }
 }
-
